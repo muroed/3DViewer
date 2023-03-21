@@ -1,0 +1,356 @@
+#include "../CPart/s21_Viewer.h"
+
+#suite tests_init
+
+#test initFile
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  s21_FreeModel(&model, err);
+
+#test errorPars
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/test.obj" ,&model);
+  ck_assert_int_eq(err, 1);
+
+  s21_FreeModel(&model, err);
+
+#test parsFile
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 2.0, 10e-06);
+
+  s21_FreeModel(&model, err);
+
+#suite rotation
+
+#test rotation_x
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+  rotation(model.vertex, M_PI/4, 1);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], -1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 2.82842, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], -1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 2.82842, 10e-06);
+
+  s21_FreeModel(&model, err);
+
+#test rotation_y
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+
+  rotation(model.vertex, M_PI/4, 2);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], -1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 1.41421*2, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], -1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 1.41421*2, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 0.0, 10e-06);
+
+  s21_FreeModel(&model, err);
+
+#test rotation_z
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+
+  rotation(model.vertex, M_PI/4, 3);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], -1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], -1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], 1.41421, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 1.41421*2, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 1.41421*2, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 2.0, 10e-06);
+
+  s21_FreeModel(&model, err);
+
+#suite move
+
+#test move_x
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+
+  move_obj(model.vertex, 2, 0);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 2.0, 10e-06);
+
+  s21_FreeModel(&model, err);
+
+#test move_y
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+
+  move_obj(model.vertex, 2.0, 1);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 2.0, 10e-06);
+
+  s21_FreeModel(&model, err);
+
+#test move_z
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+
+  move_obj(model.vertex, 2.0, 2);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 4.0, 10e-06);
+
+  s21_FreeModel(&model, err);
+
+#suite scaling
+
+#test scaling_1
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+
+  scaling(model.vertex, 1);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 2.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 2.0, 10e-06);
+
+  s21_FreeModel(&model, err);
+
+#test scaling_2
+  Model model;
+  int err = s21_InitModel(&model);
+  ck_assert_int_eq(err, 0);
+
+  err = s21_ParserFile("test_obj/cube.obj" ,&model);
+  ck_assert_int_eq(err, 0);
+
+  scaling(model.vertex, 2);
+
+  ck_assert_double_eq_tol(model.vertex->arr[0][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[0][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[1][2], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][1], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[2][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][0], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][1], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[3][2], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][0], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[4][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][0], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][1], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[5][2], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][0], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][1], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[6][2], 0.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][0], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][1], 4.0, 10e-06);
+  ck_assert_double_eq_tol(model.vertex->arr[7][2], 4.0, 10e-06);
+
+  s21_FreeModel(&model, err);

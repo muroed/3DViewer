@@ -1,0 +1,50 @@
+\input texinfo
+@setfilename 3D_C8_manual
+@settitle 3DViewer_v1.0
+
+@copying
+Made by Morfinov and Brainych on January 2023
+@end copying
+
+@titlepage
+@title 3DViewer_v1 Guide
+@vskip 
+@insertcopying
+@end titlepage
+
+@ifnottex
+@node Top
+@top 3DViewer_v1.0
+@insertcopying
+@end ifnottex
+
+@menu
+* General information:: This section provides common information about calculator.
+* Bonus. Settings:: This section provides information about advanced settings which you can aplly.
+* Bonus. Record:: This section provides information about the possibility of a recording small screencasts by a special button - the current custom affine transformation of the loaded object into gif-animation and also saving the captured (rendered) images as bmp and jpeg files.
+
+@* Bye and see you
+@end menu
+
+@node General information
+@chapter General information
+
+This project implement's  a program to visualise 3D wireframe models, which can be found in the standard applications of each operating system in the C programming language using structured programming.
+
+
+@node  Bonus. Settings
+@chapter  Bonus. Settings
+
+Our program allow the next options:
+@* *customizing the type of projection (parallel and central);
+@* *setting up the type (solid, dashed), color and thickness of the edges, display method (none, circle, square), color and size of the vertices;
+@* *choosing the background color.
+
+@node  Bonus. Record
+@chapter  Bonus. Record
+
+Our program allow the next options:
+@* *saving the captured (rendered) images as bmp and jpeg files;
+@* *recording small screencasts by a special button - the current custom affine transformation of the loaded object into gif-animation (640x480, 10fps, 5s).
+
+Press "Save JPEG/BMP" or "Save GIF" and enjoy!:)
